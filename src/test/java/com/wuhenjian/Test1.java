@@ -13,7 +13,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.junit.Test;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.*;
 
 /**
@@ -26,17 +26,22 @@ public class Test1 {
     public void asd() throws IOException, URISyntaxException {
         HttpGet get = new HttpGet("http://tanchishe.me/s/?c=Ae9mD-8ce36");//访问网页
         HttpClient client = HttpClients.createDefault();//客户端
-        RequestConfig requestConfig = RequestConfig.copy(RequestConfig.DEFAULT).setProxy(new HttpHost("", 8080)).build();//配置代理
+        RequestConfig requestConfig = RequestConfig.copy(RequestConfig.DEFAULT).setProxy(new HttpHost("180.168.179.193", 8080)).build();//配置代理
         get.setConfig(requestConfig);
         HttpResponse response = client.execute(get);
         HttpEntity entity = response.getEntity();
-        String html = EntityUtils.toString(entity);
+        String html = EntityUtils.toString(entity, "UTF-8");
         Document document = Jsoup.parse(html);
         Element element = document.getElementById("nickname");
         String nickname = element.text();
         if ("無痕剑onepiece".equals(nickname)) {
             System.out.println("成功！");
+        } else {
+            System.out.println(nickname);
         }
+        FileWriter out = new FileWriter(new File("C:\\Users\\SwordNoTrace\\Desktop\\t.html"));
+        out.write(html);
+        out.flush();
     }
 
 }
