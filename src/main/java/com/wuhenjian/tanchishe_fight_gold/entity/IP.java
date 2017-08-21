@@ -6,6 +6,8 @@ package com.wuhenjian.tanchishe_fight_gold.entity;
  */
 public class IP {
 
+    private String country;
+
     private String uri;
 
     private Integer port;
@@ -16,7 +18,9 @@ public class IP {
 
     private String type;
 
-    private Integer speed;
+    private String speed;
+
+    private String connectTime;
 
     private String aliveTime;
 
@@ -62,11 +66,11 @@ public class IP {
         this.type = type;
     }
 
-    public Integer getSpeed() {
+    public String getSpeed() {
         return speed;
     }
 
-    public void setSpeed(Integer speed) {
+    public void setSpeed(String speed) {
         this.speed = speed;
     }
 
@@ -84,5 +88,21 @@ public class IP {
 
     public void setCheckTime(String checkTime) {
         this.checkTime = checkTime;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getConnectTime() {
+        return connectTime;
+    }
+
+    public void setConnectTime(String connectTime) {
+        this.connectTime = connectTime;
     }
 }
