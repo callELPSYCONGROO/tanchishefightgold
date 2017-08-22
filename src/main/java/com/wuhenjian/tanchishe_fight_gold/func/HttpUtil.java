@@ -55,19 +55,8 @@ public class HttpUtil {
      * @throws IOException 发生异常
      */
     private static String getHtml(HttpUriRequest request) throws Exception {
-        Header[] headers = request.getHeaders("Content-Type");
-        String charset = null;
-        for (Header header : headers) {
-            String headerVal = header.getValue();
-            if (headerVal.startsWith("text/html;")) {
-                charset = headerVal.substring(headerVal.lastIndexOf("=") + 1);
-            }
-        }
-        if (charset == null) {
-            throw new Exception("未获取到页面字符集");
-        }
         HttpEntity entity = HttpClients.createDefault().execute(request).getEntity();
-        return EntityUtils.toString(entity,charset);
+        return EntityUtils.toString(entity,"UTF-8");
     }
 
 }

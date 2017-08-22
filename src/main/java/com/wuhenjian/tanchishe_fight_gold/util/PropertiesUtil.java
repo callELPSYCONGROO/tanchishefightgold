@@ -19,7 +19,7 @@ public class PropertiesUtil {
     static {
         properties = new Properties();
         try {
-            properties.load(new FileInputStream(new File("config.properties")));
+            properties.load(new FileInputStream(new File("E:\\IntelliJWorkSpaces\\tanchishefightgold\\src\\main\\resources\\config.properties")));
         } catch (IOException e) {
             e.printStackTrace();
         }

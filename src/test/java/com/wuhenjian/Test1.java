@@ -1,5 +1,8 @@
 package com.wuhenjian;
 
+import com.wuhenjian.tanchishe_fight_gold.entity.IP;
+import com.wuhenjian.tanchishe_fight_gold.func.Crawler;
+import com.wuhenjian.tanchishe_fight_gold.util.PropertiesUtil;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -12,9 +15,11 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.junit.Test;
+import org.quartz.JobExecutionException;
 
 import java.io.*;
 import java.net.*;
+import java.util.List;
 
 /**
  * @author SwordNoTrace
@@ -42,6 +47,25 @@ public class Test1 {
         FileWriter out = new FileWriter(new File("C:\\Users\\SwordNoTrace\\Desktop\\t.html"));
         out.write(html);
         out.flush();
+    }
+
+    @Test
+    public void asdd() throws Exception {
+        String proxyUrl = PropertiesUtil.getString("PROXY_WEB_URL");
+        String goldUrl = PropertiesUtil.getString("GOLD_URL");
+        String nickname = PropertiesUtil.getString("NICKNAME");
+        Crawler crawler = new Crawler(proxyUrl, goldUrl);
+        List<IP> ipList = null;
+        try {
+            ipList = crawler.getProxyIp();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (ipList == null || ipList.size() == 0) {
+            throw new Exception("代理IP为空");
+        }
+        int i = crawler.catchTheCoin(nickname, ipList);
+        System.out.println("*****************"+i+"*****************");
     }
 
 }
