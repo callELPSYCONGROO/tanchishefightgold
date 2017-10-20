@@ -2,9 +2,7 @@ package com.wuhenjian.tanchishe_fight_gold.task;
 
 import com.wuhenjian.tanchishe_fight_gold.task.job.MyJob;
 import org.quartz.*;
-import org.quartz.impl.DirectSchedulerFactory;
 import org.quartz.impl.StdSchedulerFactory;
-import org.quartz.impl.triggers.CronTriggerImpl;
 
 /**
  * @author SwordNoTrace

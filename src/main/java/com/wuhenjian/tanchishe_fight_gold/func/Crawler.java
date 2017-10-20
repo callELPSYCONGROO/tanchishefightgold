@@ -9,6 +9,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -95,6 +96,25 @@ public class Crawler {
         return ips;
     }
 
+    public List<IP> getProxyIPString() throws Exception {
+        String html = HttpUtil.getHtmlByGet(proxyUrl, null);
+        Document document = Jsoup.parse(html);
+        String text = document.body().text();
+        String[] split = text.split(" ");
+        List<String> list = new ArrayList<>();
+        Collections.addAll(list, split);
+        List<IP> ipList = new ArrayList<>();
+        for (String s : list) {
+            String uri = s.split(":")[0];
+            String port = s.split(":")[1];
+            IP ip = new IP();
+            ip.setUri(uri);
+            ip.setPort(Integer.valueOf(port));
+            ipList.add(ip);
+        }
+        return ipList;
+    }
+
     /**
      * 抓金币
      * @param ipList 代理IP集合
@@ -108,9 +128,7 @@ public class Crawler {
                 html = HttpUtil.getHtmlByGet(goldUrl, ip);
             } catch (Exception e) {
                 logger.error("代理IP访问金币链接发生异常！", e);
-                System.out.println("***↓↓↓↓↓↓↓↓↓↓↓↓↓↓***");
-                System.out.println(e.getCause().getMessage());
-                System.out.println("***↑↑↑↑↑↑↑↑↑↑↑↑↑↑***");
+                return count;
             }
             Document document = Jsoup.parse(html);
             Element elementById = document.getElementById("nickname");

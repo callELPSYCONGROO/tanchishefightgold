@@ -57,7 +57,8 @@ public class Test1 {
         Crawler crawler = new Crawler(proxyUrl, goldUrl);
         List<IP> ipList = null;
         try {
-            ipList = crawler.getProxyIp();
+//            ipList = crawler.getProxyIp();
+            ipList = crawler.getProxyIPString();
         } catch (Exception e) {
             e.printStackTrace();
         }
