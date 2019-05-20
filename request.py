@@ -156,7 +156,8 @@ if __name__ == "__main__":
             print(i)
 
     url = input_check_args['url']
+    callback_url = input_check_args['callback']
     for proxy_addr in proxy_ip_list:
         http_status = build_request(proxy_addr).urlopen(input_check_args['url']).getcode()
-        callback(url, http_status)
+        callback(callback_url, http_status)
 
