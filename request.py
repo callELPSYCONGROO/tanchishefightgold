@@ -65,7 +65,7 @@ def get_args():
         arg 为key=value格式，key、value均不允许为空：
             proxy_url：value为代理资源URL，默认为DEFAULT_PROXY_RESOURCE_URL
             url：value为目标URL，默认为DEFAULT_TARGET_URL
-            time：value为点击次数，小于0则为使所有代理请求一次目标URL，默认为-1
+            time：value为点击次数，非零整数，小于0则为使所有代理请求一次目标URL，默认为-1
             repeat：value为重复点击次数，只允许为正整数，默认为1
             callback：value为回调URL，使用GET请求，参数为：status-点击请求目标URL的HTTP状态码，如：https://myapp.com/demo?status=200，默认为空'''
 
@@ -129,6 +129,10 @@ def callback(url, status):
         print('回调接口：', url)
         urllib.request.urlopen(url + '?status=' + status)
 
+def check(proxy_addr, url, callback_url):
+    http_status = build_request(proxy_addr).urlopen(url).getcode()
+    callback(callback_url, http_status)
+
 if __name__ == "__main__":
     '''获取命令行参数'''
     input_proxy_args, input_check_args, error_msg = get_args()
@@ -137,6 +141,11 @@ if __name__ == "__main__":
         print('重复次数必须大于0\nfor help use -help/-h')
         sys.exit(0)
     time = input_check_args['time']
+    if time == 0:
+        print('点击次数应为非零整数\nfor help use -help/-h')
+        sys.exit(0)
+    '''限制请求次数'''
+    limit_time = time > 0
 
     if error_msg:
         '''参数输入错误'''
@@ -157,7 +166,15 @@ if __name__ == "__main__":
 
     url = input_check_args['url']
     callback_url = input_check_args['callback']
+    print('代理资源共' + str(len(proxy_ip_list)) + '个')
+    print('开始请求目标链接...')
     for proxy_addr in proxy_ip_list:
-        http_status = build_request(proxy_addr).urlopen(input_check_args['url']).getcode()
-        callback(callback_url, http_status)
-
+        if limit_time and time <= 0:
+            break
+        '''重复请求repeat次'''
+        for i_repeat in range(repeat):
+            check(proxy_addr, url, callback_url)
+        if limit_time:
+            --time
+    
+    print('请求完成...')
